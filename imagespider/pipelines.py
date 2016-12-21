@@ -7,8 +7,6 @@
 import scrapy
 from scrapy.contrib.pipeline.images import ImagesPipeline
 from scrapy.exceptions import DropItem
-
-from PIL import Image
 try:
     from cStringIO import StringIO as BytesIO, StringIO
 except ImportError:

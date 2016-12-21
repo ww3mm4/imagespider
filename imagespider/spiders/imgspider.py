@@ -3,7 +3,6 @@ import scrapy
 from imagespider.settings import ALLOWED_DOMAINS,START_URL,BASE_URL
 from imagespider.items import ImagespiderItem
 from scrapy.selector import Selector
-from scrapy.contrib.loader import ItemLoader
 
 
 class ImgspiderSpider(scrapy.Spider):
