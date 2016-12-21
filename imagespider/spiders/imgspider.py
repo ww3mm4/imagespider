@@ -17,11 +17,19 @@ class ImgspiderSpider(scrapy.Spider):
             request = scrapy.Request(BASE_URL+link,callback=self.parse)
             yield request
 
+        for link in sel.xpath("/html/body/div[6]/div/span/a/@href").extract():
+            request = scrapy.Request(BASE_URL+link,callback=self.parse)
+            yield request
+
         for link in sel.xpath("//*[@id='1920x1080']/@href").extract():
-            request = scrapy.Request(BASE_URL+link,callback=self.parse_item)
+            title =  sel.xpath("//*[@id='titleName']/text()").extract()[0]
+            request = scrapy.Request(BASE_URL+link,meta={'title': title},callback=self.parse_item)
             yield request
 
     def parse_item(self,response):
-        l = ItemLoader(item=ImagespiderItem(), response=response)
-        l.add_xpath("img_url","/html/body/img[1]/@src")
-        return l.load_item()
+        # l = ItemLoader(item=ImagespiderItem(), response=response)
+        # l.add_xpath("img_url","/html/body/img[1]/@src")
+        item = ImagespiderItem()
+        item['title'] = response.meta['title']
+        item['img_url'] =response.xpath("/html/body/img[1]/@src").extract()
+        return item

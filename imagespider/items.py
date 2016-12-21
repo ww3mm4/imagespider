@@ -12,4 +12,5 @@ class ImagespiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     img_url = scrapy.Field()
+    title = scrapy.Field()
     pass
