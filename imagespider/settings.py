@@ -20,7 +20,11 @@ ITEM_PIPELINES = {
     'imagespider.pipelines.ImagespiderPipeline': 300,
     'scrapy.contrib.pipeline.images.ImagesPipeline': 1,
 }
-IMAGES_STORE = '/home/mugua/images'
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware':None,
+    'imagespider.middlewares.RotateUserAgentMiddleware':400,
+}
+IMAGES_STORE = '/Users/apple/Desktop/images'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'imagespider (+http://www.yourdomain.com)'
