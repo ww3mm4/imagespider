@@ -17,8 +17,9 @@ ALLOWED_DOMAINS = 'desk.zol.com.cn'
 START_URL = 'http://desk.zol.com.cn/bizhi/804_9301_2.html'
 BASE_URL = 'http://desk.zol.com.cn'
 ITEM_PIPELINES = {
-    'imagespider.pipelines.ImagespiderPipeline': 300,
-    'scrapy.contrib.pipeline.images.ImagesPipeline': 1,
+    # 'imagespider.pipelines.ImagespiderPipeline': 300,
+    # 'scrapy.contrib.pipeline.images.ImagesPipeline': 1,
+    'imagespider.pipelines.SqlPipeline': 300,
 }
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware':None,
