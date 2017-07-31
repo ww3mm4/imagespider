@@ -52,6 +52,8 @@ class SqlPipeline(object):
     def open_spider(self, spider):
         # 初始化数据库连接:
         engine = create_engine('mysql+mysqldb://root:root@localhost/image', echo=True)
+
+        #创建表
         Base.metadata.create_all(engine)
 
         # 创建DBSession类型:
