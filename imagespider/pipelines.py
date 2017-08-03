@@ -7,9 +7,8 @@
 import scrapy
 from scrapy.contrib.pipeline.images import ImagesPipeline, Image
 from scrapy.exceptions import DropItem
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from wheel import metadata
 
 from imagespider import dao
 from imagespider.dao import Base
