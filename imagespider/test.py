@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
+from openpyxl import Workbook
 import json,re,time,urlparse,codecs
 
 # log文件
@@ -11,10 +12,15 @@ file = codecs.open("/Users/apple/Desktop/access.log-20170624",'r',encoding = "IS
 jsonFile = open('/Users/apple/Desktop/log.json', 'a')
 # error文件
 error = open('/Users/apple/Desktop/error.txt', 'a')
-
+# excl
+excl = '/Users/apple/Desktop/log.xlsx'
 # 计数
 i = 0
 
+#excel
+wb = Workbook()
+ws = wb.active
+ws.title = "log"
 
 def getRefer(url):
     result = urlparse.urlparse(url)
@@ -34,8 +40,20 @@ def isMobile(user_agent):
 
 def formatTiem(localtime):
     timeArray = time.strptime(localtime, '%d/%b/%Y:%H:%M:%S +0800')
-    otherStyleTime = time.strftime("+0800 %Y/%m/%d %H:%M:%S", timeArray)
+    otherStyleTime = time.strftime("%Y/%m/%d %H:%M:%S", timeArray)
     return otherStyleTime
+
+def wirteExcel(log):
+    ws['A%d'%i] = log['ip1']
+    ws['B%d'%i] = log['ip2']
+    ws['C%d'%i] = log['date']
+    ws['D%d'%i] = log['method']
+    ws['E%d'%i] = log['url']
+    ws['F%d'%i] = log['referer']
+    ws['G%d'%i] = log['user_agent']
+    ws['H%d'%i] = log['url_refer']
+    ws['I%d'%i] = log['referer_refer']
+    ws['J%d'%i] = log['is_mobile']
 
 def log2Json(line):
     log = OrderedDict()
@@ -64,12 +82,15 @@ def log2Json(line):
     if log['user_agent'] == '-':
         log['user_agent'] = ''
 
-    print line
+    wirteExcel(log)
 
     jsonStr = json.dumps(log)
+
     if (i != 0):
         jsonStr = ',' + jsonStr
     jsonFile.write(jsonStr)
+
+    print line
 
 
 if __name__ == '__main__':
@@ -91,4 +112,5 @@ if __name__ == '__main__':
     jsonFile.close()
     file.close()
     error.close()
+    wb.save(excl)
     print 'ok %d' % i
