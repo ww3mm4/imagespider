@@ -34,7 +34,7 @@ def isMobile(user_agent):
 
 def formatTiem(localtime):
     timeArray = time.strptime(localtime, '%d/%b/%Y:%H:%M:%S +0800')
-    otherStyleTime = time.strftime("%Y/%m/%d %H:%M:%S +0800", timeArray)
+    otherStyleTime = time.strftime("+0800 %Y/%m/%d %H:%M:%S", timeArray)
     return otherStyleTime
 
 def log2Json(line):
@@ -63,7 +63,9 @@ def log2Json(line):
 
     if log['user_agent'] == '-':
         log['user_agent'] = ''
+
     print line
+
     jsonStr = json.dumps(log)
     if (i != 0):
         jsonStr = ',' + jsonStr
@@ -79,10 +81,10 @@ if __name__ == '__main__':
         except Exception as err:
             error.write(line)
             print(err)
+        i+=1
 
-        i += 1
-        if i == 10:
-            break
+        # if i==10:
+        #     break
 
 
     jsonFile.write(']')
