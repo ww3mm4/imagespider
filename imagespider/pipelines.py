@@ -65,7 +65,7 @@ class SqlPipeline(object):
 
         session = self.DBSession()
         reslut = session.query(dao.Image) \
-            .filter(dao.Image.img_url == item['img_url']).all()
+            .filter(dao.Image.img_url == item['title']).all()
         session.close()
 
         if len(reslut) == 0:
