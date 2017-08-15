@@ -9,7 +9,7 @@ from scrapy.contrib.pipeline.images import ImagesPipeline, Image
 from scrapy.exceptions import DropItem
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
+from urllib import urlencode
 from imagespider import dao
 from imagespider.dao import Base
 
@@ -62,10 +62,10 @@ class SqlPipeline(object):
         pass
 
     def process_item(self, item, spider):
-
+        item['img_url'] = urlencode(item['img_url'])
         session = self.DBSession()
         reslut = session.query(dao.Image) \
-            .filter(dao.Image.img_url == item['title']).all()
+            .filter(dao.Image.img_url == item['img_url']).all()
         session.close()
 
         if len(reslut) == 0:
