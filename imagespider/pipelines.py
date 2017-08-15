@@ -5,13 +5,16 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import scrapy
+import sys
 from scrapy.contrib.pipeline.images import ImagesPipeline, Image
 from scrapy.exceptions import DropItem
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from imagespider import dao
 from imagespider.dao import Base
-from urllib import urlencode
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 try:
     from cStringIO import StringIO as BytesIO, StringIO
