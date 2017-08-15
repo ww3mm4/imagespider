@@ -62,7 +62,7 @@ class SqlPipeline(object):
         pass
 
     def process_item(self, item, spider):
-        item['img_url'] = urlencode(item['img_url'])
+        item['img_url'] = [urlencode(image_url) for image_url in item['img_url']]
         session = self.DBSession()
         reslut = session.query(dao.Image) \
             .filter(dao.Image.img_url == item['img_url']).all()
