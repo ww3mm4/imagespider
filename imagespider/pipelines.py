@@ -11,6 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from imagespider import dao
 from imagespider.dao import Base
+from urllib import urlencode
 
 try:
     from cStringIO import StringIO as BytesIO, StringIO
