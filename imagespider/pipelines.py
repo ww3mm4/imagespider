@@ -18,12 +18,12 @@ try:
 except ImportError:
     from io import BytesIO
 
-class ImagespiderPipeline(ImagesPipeline):
 
+class ImagespiderPipeline(ImagesPipeline):
     def image_custom_key(self, response):
         name = response.meta['title']
         image_guid = response.url.split('/')[-1]
-        img_key = name+'/%s' % (image_guid)
+        img_key = name + '/%s' % (image_guid)
         return img_key
 
     def get_images(self, response, request, info):
@@ -31,12 +31,9 @@ class ImagespiderPipeline(ImagesPipeline):
             key = self.image_custom_key(response)
             yield key, image, buf
 
-
-
     def get_media_requests(self, item, info):
         for image_url in item['img_url']:
-            yield scrapy.Request(image_url,meta={'title':item['title']})
-
+            yield scrapy.Request(image_url, meta={'title': item['title']})
 
     def item_completed(self, results, item, info):
         image_paths = [x['path'] for ok, x in results if ok]
@@ -45,14 +42,16 @@ class ImagespiderPipeline(ImagesPipeline):
         item['img_url'] = image_paths
         return item
 
+
 class SqlPipeline(object):
     collection_name = 'scrapy_items'
 
     def open_spider(self, spider):
         # 初始化数据库连接:
-        engine = create_engine('mysql+mysqldb://root:ww333mm444@localhost/zhuomian', pool_size=100, pool_recycle=3600,echo=True)
+        engine = create_engine('mysql+mysqldb://root:ww333mm444@localhost/zhuomian', pool_size=100, pool_recycle=3600,
+                               echo=True)
 
-        #创建表
+        # 创建表
         Base.metadata.create_all(engine)
 
         # 创建DBSession类型:
@@ -63,10 +62,22 @@ class SqlPipeline(object):
         pass
 
     def process_item(self, item, spider):
-        for image_url in item['img_url']:
-            new_image = dao.Image(img_url=image_url, title=item['title'])
-            session = self.DBSession()
-            session.add(new_image)
-            session.commit()
-            session.close()
+
+        session = self.DBSession()
+        reslut = session.query(dao.Image) \
+            .filter(dao.Image.img_url == item['img_url']).all()
+        session.close()
+
+        if len(reslut) == 0:
+            for image_url in item['img_url']:
+                new_image = dao.Image(
+                    img_url=image_url,
+                    title=item['title']
+                )
+
+                session = self.DBSession()
+                session.add(new_image)
+                session.commit()
+                session.close()
+
         return item
