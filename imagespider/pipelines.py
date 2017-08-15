@@ -51,7 +51,7 @@ class SqlPipeline(object):
 
     def open_spider(self, spider):
         # 初始化数据库连接:
-        engine = create_engine('mysql+mysqldb://root:ww333mm444@localhost/zhuomian', pool_size=100, pool_recycle=3600,
+        engine = create_engine('mysql+mysqldb://root:ww333mm444@localhost/zhuomian?charset=utf8', pool_size=100, pool_recycle=3600,
                                echo=True)
 
         # 创建表
