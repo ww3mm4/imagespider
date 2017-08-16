@@ -13,8 +13,6 @@ from sqlalchemy.orm import sessionmaker
 from imagespider import dao
 from imagespider.dao import Base
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 try:
     from cStringIO import StringIO as BytesIO, StringIO
@@ -65,11 +63,12 @@ class SqlPipeline(object):
         pass
 
     def process_item(self, item, spider):
+	print(item['title'])
         for image_url in item['img_url']:
             session = self.DBSession()
             reslut = session.query(dao.Image) \
                 .filter(dao.Image.img_url == image_url).all()
-            if not reslut:
+            if len(reslut) == 0:
                 new_image = dao.Image(
                     img_url=image_url,
                     title=item['title']

@@ -10,7 +10,7 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'imagespider'
-
+FEED_EXPORT_ENCODING = 'utf-8'
 SPIDER_MODULES = ['imagespider.spiders']
 NEWSPIDER_MODULE = 'imagespider.spiders'
 ALLOWED_DOMAINS = 'desk.zol.com.cn'
